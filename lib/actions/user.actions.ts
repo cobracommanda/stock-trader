@@ -2,7 +2,9 @@
 
 import { connectToDatabase } from "@/database/mongoose";
 
-export const getAllUsersForNewsEmail = async () => {
+export const getAllUsersForNewsEmail = async (): Promise<
+  Array<{ id: string; email: string; name: string }>
+> => {
   try {
     const mongoose = await connectToDatabase();
     const db = mongoose.connection.db;
@@ -25,5 +27,6 @@ export const getAllUsersForNewsEmail = async () => {
       }));
   } catch (e) {
     console.error("Error fetching users for news email:", e);
+    return [];
   }
 };

@@ -37,8 +37,9 @@ export function formatMarketCapValue(marketCapUsd: number): string {
 
 export const getDateRange = (days: number) => {
   const toDate = new Date();
-  const fromDate = new Date();
-  fromDate.setDate(toDate.getDate() - days);
+  toDate.setUTCHours(0, 0, 0, 0);
+  const fromDate = new Date(toDate);
+  fromDate.setUTCDate(toDate.getUTCDate() - days);
   return {
     to: toDate.toISOString().split("T")[0],
     from: fromDate.toISOString().split("T")[0],
@@ -85,7 +86,9 @@ export const formatArticle = (
   symbol?: string,
   index: number = 0
 ) => ({
-  id: isCompanyNews ? Date.now() + Math.random() : article.id + index,
+  id: `${article.id ?? article.url ?? article.headline}-${
+    isCompanyNews ? symbol ?? "GEN" : "GEN"
+  }-${index}`,
   headline: article.headline!.trim(),
   summary:
     article.summary!.trim().substring(0, isCompanyNews ? 200 : 150) + "...",
